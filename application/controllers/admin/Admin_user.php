@@ -21,8 +21,11 @@ class Admin_user extends \Application\Component\Common\AdminPermissionValidateCo
 
 	public function lists ()
 	{
+		$id = $this->input->get('id');
+		$where = [];
+		if($id){ $where['id'] = $id; }
 		$page = max ( 1, $this->input->get ( 'page' ) );
-		$result = $this->admin_data->lists_page ( array (), ['id', 'desc'], $page );
+		$result = $this->admin_data->lists_page ( $where, ['id', 'desc'], $page );
 		$result['page_html'] = create_page_html ( '?', $result['total'] );
 		$this->load->view ( '', $result );
 	}
@@ -58,6 +61,10 @@ class Admin_user extends \Application\Component\Common\AdminPermissionValidateCo
 			$this->output->ajax_return ( AJAX_RETURN_SUCCESS, 'ok' );
 		} else {
 			$auth_group_list = $this->admin_auth_group_data->lists (array ('status'=>1));
+			foreach($auth_group_list as $k=>$v){
+				$auth_group_list[$k]['name'] = $v['title'];
+				unset($auth_group_list[$k]['title']);
+			}
 			$this->load->view ( '', ['auth_group_list' => $auth_group_list] );
 		}
 	}
@@ -67,9 +74,15 @@ class Admin_user extends \Application\Component\Common\AdminPermissionValidateCo
 		if ( $uid ) {
 			$user['user_info'] = $this->admin_data->get_info ( $uid );
 			$user['auth_group_list'] = $this->admin_auth_group_data->lists ();
+
+			foreach($user['auth_group_list'] as $k=>$v){
+				$user['auth_group_list'][$k]['name'] = $v['title'];
+				unset($user['auth_group_list'][$k]['title']);
+			}
 			$this->load->view ( '@/add', $user );
 		} else {
 			exit( '该用户不存在' );
 		}
 	}
+
 }

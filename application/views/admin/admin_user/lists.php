@@ -27,6 +27,7 @@
                     <td><?=$item['is_disable'] == 1? '是':'否'?></td>
                     <td>
                         <button class="layui-btn-mini layui-btn" type="button" data-modal="<?php echo base_url ( 'admin/admin_user/edit/'.$item['id'] ) ?>" data-width="450px" data-title="编辑管理员">编辑</button>
+                        <button data-modal="<?php echo base_url ( 'admin/admin_user_org/auth_node/'.$item['id']  ) ?>" data-title="编辑岗位" data-width="450px" class="layui-btn layui-btn-mini layui-btn-normal">岗位</button>
                         <button class="layui-btn layui-btn-mini layui-btn-danger confirm_get" data-url="<?=base_url ('admin/admin_user/del/'.$item['id'])?>" >删除</button>
                     </td>
                 </tr>

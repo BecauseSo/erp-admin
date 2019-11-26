@@ -61,10 +61,10 @@ class Admin_facade extends \Application\Component\Common\IFacade
 	 * @param $user_name
 	 * @param $user_password
 	 * @param $real_name
-	 * @param int $role_id
+	 * @param string $role_id
 	 * @return bool
 	 */
-	public function create ( $user_name, $user_password, $real_name = '', $role_id = 0, $is_disable = 0 )
+	public function create ( $user_name, $user_password, $real_name = '', $role_id = '', $is_disable = 0 )
 	{
 
 		$admin = $this->admin_data->get_info_by_user_name ( $user_name );
@@ -95,13 +95,13 @@ class Admin_facade extends \Application\Component\Common\IFacade
 	 * @param $user_name
 	 * @param $user_password
 	 * @param string $real_name
-	 * @param int $role_id
+	 * @param string $role_id
 	 * @param int $is_disable
 	 * @return bool
 	 */
-	public function update ( $userid, $user_name, $user_password, $real_name = '', $role_id = 0, $is_disable = 0 )
+	public function update ( $userid, $user_name, $user_password, $real_name = '', $role_id = '', $is_disable = 0 )
 	{
-		if ( !is_numeric ( $role_id ) ) {
+		if ( empty($role_id) ) {
 			$this->set_error ( '权限组必须选择哦' );
 			return false;
 		}
