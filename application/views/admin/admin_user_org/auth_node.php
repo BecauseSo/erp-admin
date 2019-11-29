@@ -21,9 +21,8 @@
         // zTree 配置项
         var setting = {
             check: {
-                enable: true
-                , chkStyle: 'checkbox'
-                ,chkboxType:{ "Y": "", "N": "" }
+                enable: true,
+                chkboxType:  { "Y": "", "N": "" }  //“p” 表示操作会影响父级节点；“s” 表示操作会影响子级节点。
             },
             view: {
                 dblClickExpand: true,
@@ -72,7 +71,7 @@
                 cache: false,
                 data: {
                     id: _id,
-                    auth_rule_ids: auth_rule_ids
+                    auth_rule_ids: auth_rule_ids,
                 },
                 success: function (data) {
                     layer.msg(data.msg);

@@ -79,4 +79,18 @@ class Admin_user_org_data extends \Application\Component\Common\IData{
 		$info = $query->result_array();
 		return $info;
 	}
+
+	/**
+	 * 根据组织id 查询用户id
+	 * @param string $ids
+	 * @return mixed
+	 */
+	public function list_in_ids($ids = ''){
+		if($ids){
+			$sql = 'select a.u_id,a.o_id,b.user_name,b.real_name from admin_user_org a LEFT JOIN  admin b on a.u_id = b.id where b.is_disable=0 and a.o_id in ('.$ids.')';
+			$query = $this->db->query($sql);
+			$info = $query->result_array();
+			return $info;
+		}
+	}
 }

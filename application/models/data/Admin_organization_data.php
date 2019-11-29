@@ -107,4 +107,29 @@ class Admin_organization_data extends \Application\Component\Common\IData{
 	}
 
 
+	/**
+	 * 根据uid查询
+	 * @param int $uid
+	 * @return mixed
+	 */
+	public function lists_in_uid($uid = 0){
+		$sql = 'select b.id from admin_user_org a LEFT JOIN admin_organization b on a.o_id = b.id where a.u_id = '.$uid;
+		$query = $this->db->query($sql);
+		$info = $query->result_array();
+		return $info;
+	}
+
+
+	/**
+	 * 根据pid查询
+	 * @param string $pids
+	 * @return mixed
+	 */
+	public function lists_in_pids($pids = ''){
+		$sql = 'select id from admin_organization where status=1 and  pid in ('.$pids.')';
+		$query = $this->db->query($sql);
+		$info = $query->result_array();
+		return $info;
+	}
+
 }

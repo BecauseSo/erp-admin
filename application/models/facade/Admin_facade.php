@@ -14,6 +14,9 @@ class Admin_facade extends \Application\Component\Common\IFacade
 	{
 		parent::__construct ();
 		$this->load->model ( 'data/admin_data' );
+		$this->load->model ( 'data/admin_user_org_data' );
+		$this->load->model ( 'data/admin_organization_data' );
+		$this->load->model ( 'data/admin_org_temp_data' );
 
 	}
 
@@ -25,7 +28,6 @@ class Admin_facade extends \Application\Component\Common\IFacade
 	 */
 	public function login ( $user_name, $user_password )
 	{
-
 		$admin = $this->admin_data->get_info_by_user_name ( $user_name );
 		if ( !$admin ) {
 			$this->set_error ( '不存在此用户！' );
@@ -50,10 +52,62 @@ class Admin_facade extends \Application\Component\Common\IFacade
 			$this->set_error ( '记录登陆信息失败' );
 			return false;
 		}
-		$this->session->set_userdata ( self::SESSION_USER_FLAG, $admin['id'] );
+
+		//添加关联用户
+
+		//获取当前开启的岗位
+		$org_list = $this->admin_organization_data->lists_in_uid($admin['id']);
+		$o_id_arr = $org_list?array_column($org_list,'id'):[];
+
+		$o_ids_new = array_unique($this->or_tree_list([],implode(',',$o_id_arr))); //获取所有下级岗位
+
+		//获取所有权限组下的用户id，并添加到临时表中
+		$user_list = $this->admin_user_org_data->list_in_ids(implode(',',$o_ids_new));
+
+		//过滤掉有上级的权限，获得该账号最高权限组
+		foreach($o_id_arr as $k=>$v){
+			if(array_search($v,$o_ids_new)){
+				unset($o_id_arr[$k]);
+				continue;
+			}
+			$user_list[] = ['u_id'=>$admin['id']
+							,'o_id'=>$v
+							,'user_name'=>$admin['user_name']
+							,'real_name'=>$admin['real_name']];
+		}
+
+		//添加到临时表中
+		$re = $this->admin_org_temp_data->add_arr($admin['id'],$user_list);
+		if(!$re){
+			$this->set_error ( '用户权限读取失败' );return false;
+		}
+		//添加关联用户end
+
+		$this->session->set_userdata ( self::SESSION_USER_FLAG, $admin['id'] ); //保存登录缓存
 		set_cookie ( self::SESSION_USER_FLAG, auth_code ( $admin['id'], 'ENCODE' ), 43200 );
-		$this->admin_logs ( '登陆', $admin );
+		$this->admin_logs ( '登陆', $admin ); //添加日志
 		return true;
+	}
+
+	/**
+	 * 获取下级所有权限
+	 * @param string $ids
+	 * @return array
+	 */
+	public function or_tree_list($list,$ids = ''){
+		static $list_new = [];
+
+		if(empty($ids)){ return []; }
+
+		//根据id查询组织
+		$arr = $this->admin_organization_data->lists_in_pids($ids);
+		$arr = $arr?array_column($arr,'id'):[];
+		$list_new = array_merge($list,$arr);
+		if(count($arr)){
+			$ids = implode(',',$arr);
+			$this->or_tree_list($list_new,$ids);
+		}
+		return $list_new;
 	}
 
 	/**
