@@ -67,19 +67,6 @@ class Admin_user_org_data extends \Application\Component\Common\IData{
 		}
 	}
 
-
-	/**
-	 * 查询列表
-	 * @param int $o_id
-	 * @return mixed
-	 */
-	public function user_list($o_id = 0){
-		$sql = 'select b.* from admin_user_org a LEFT JOIN admin b on a.u_id=b.id where a.o_id='.$o_id;
-		$query = $this->db->query($sql);
-		$info = $query->result_array();
-		return $info;
-	}
-
 	/**
 	 * 根据组织id 查询用户id
 	 * @param string $ids
@@ -88,6 +75,21 @@ class Admin_user_org_data extends \Application\Component\Common\IData{
 	public function list_in_ids($ids = ''){
 		if($ids){
 			$sql = 'select a.u_id,a.o_id,b.user_name,b.real_name from admin_user_org a LEFT JOIN  admin b on a.u_id = b.id where b.is_disable=0 and a.o_id in ('.$ids.')';
+			$query = $this->db->query($sql);
+			$info = $query->result_array();
+			return $info;
+		}
+	}
+
+
+	/**
+	 * 获取所有权限
+	 * @param int $uid
+	 * @return mixed
+	 */
+	public function get_user_org($uid = 0){
+		if($uid){
+			$sql = 'select b.id from admin_user_org a LEFT JOIN admin_organization b on a.o_id=b.id where a.u_id='.$uid.' and b.status=1';
 			$query = $this->db->query($sql);
 			$info = $query->result_array();
 			return $info;

@@ -85,7 +85,7 @@
         //用户列表渲染
         var tableIns = table.render({
             elem: '#test'
-            ,url:'/admin/admin_user_org/userlist_in_org'
+            ,url:'/admin/admin_user/lists_org_id'
             ,where:{o_id:1}
             ,cols: [[
                 {field:'id', title: 'ID'}

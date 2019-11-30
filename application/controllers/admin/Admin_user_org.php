@@ -58,18 +58,4 @@ class admin_user_org extends \Application\Component\Common\AdminPermissionValida
         }
     }
 
-
-    /**
-     * 根据组织id查询用户列表
-     */
-    public function userlist_in_org(){
-        $input = $this->input->get();
-        $userlist = [];
-        if($input['o_id']){
-            $userlist = $this->admin_user_org_data->user_list($input['o_id']);
-        }
-        $ret = ['code'=>0,'msg'=>'ok','data'=>$userlist];
-        echo json_encode($ret);
-//        $this->output->ajax_return (AJAX_RETURN_SUCCESS,'操作成功',['userlist'=>$userlist]);
-    }
 }

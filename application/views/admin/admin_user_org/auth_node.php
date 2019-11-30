@@ -22,7 +22,7 @@
         var setting = {
             check: {
                 enable: true,
-                chkboxType:  { "Y": "", "N": "" }  //“p” 表示操作会影响父级节点；“s” 表示操作会影响子级节点。
+                chkboxType:  { "Y": "s", "N": "s" }  //“p” 表示操作会影响父级节点；“s” 表示操作会影响子级节点。
             },
             view: {
                 dblClickExpand: true,
