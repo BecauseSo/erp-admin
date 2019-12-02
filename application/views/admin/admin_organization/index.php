@@ -3,8 +3,7 @@
     <div class="layui-tab admin-layui-tab layui-tab-brief">
         <ul class="layui-tab-title">
             <li class="layui-this">组织列表</li>
-            <li class=""><a href="<?php echo base_url ( 'admin/admin_organization/add' ) ?>">新增部门</a></li>
-            <li class=""><a href="<?php echo base_url ( 'admin/admin_organization/add' ) ?>">新增成员</a></li>
+            <li class=""><a href="<?php echo base_url ( 'admin/admin_organization/add' ) ?>">新增岗位</a></li>
         </ul>
         <div class="layui-tab-content">
             <div id="test1" class="demo-tree demo-tree-box" style="width: 20%;min-height:600px ; height: 100%;float: left; overflow: scroll;"></div>

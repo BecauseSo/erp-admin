@@ -3,8 +3,7 @@
 <div class="layui-tab admin-layui-tab layui-tab-brief">
     <ul class="layui-tab-title">
         <li class=""><a href="<?php echo base_url ( 'admin/admin_organization/index' ) ?>">组织列表</a></li>
-        <li class="layui-this">新增部门</li>
-        <li class=""><a href="<?php echo base_url ( 'admin/admin_organization/add' ) ?>">新增成员</a></li>
+        <li class="layui-this">新增岗位</li>
     </ul>
 <div class="layui-tab-item layui-show">
     <form action="<?php echo base_url ( 'admin/admin_organization/save' ) ?>" method="post" class="layui-form">
